@@ -26,4 +26,5 @@ mark.yellow {
 textarea {
   resize: auto !important;
   height: 400px;
+  background-color: #d0bfff;
 }

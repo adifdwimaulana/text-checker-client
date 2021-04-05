@@ -79,10 +79,34 @@ const Example = ({title, text, initialValue}) => {
 
     let body = []
     let split = value.split(" ")
+    let last = split[split.length - 1]
 
     split.forEach((result) => body.push(result.replace(/[!@#$%^&*.,;]$/g, "")))
-    // Fetch and Highlighting
     
+    // Fetch and Highlighting
+    fetchHighlight(body)
+  }
+
+  const fetchHighlight = (body) => {
+    axios({
+      method: 'POST',
+      url: 'http://localhost:8000/api/word/highlight',
+      data: { input: body }
+    })
+    .then((response) => {
+      if(response.status === 200){
+        if(response.data.status === 200){
+          console.log(response.data.result)
+          setHighlight(response.data.result)
+        }
+      }
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
+
+  const fetchSuggestion = (body) => {
 
   }
 
@@ -95,6 +119,7 @@ const Example = ({title, text, initialValue}) => {
           value={value}
           highlight={highlight}
           onChange= {handleChange}
+          onPaste={event => console.log(event.clipboardData.getData('text'))}
           rows="4"
           containerStyle={{width: "100%"}}
           style={{width: "100%"}}
