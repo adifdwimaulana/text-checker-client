@@ -81,8 +81,9 @@ const Example = ({title, text, initialValue}) => {
 
     let body = []
     let orders = []
-    let split = value.split(" ")
-    
+    let split = value.split(/[., ]/)
+    split = split.filter(e => e)
+
     let startIndex = 0
     split.forEach((result, index) => {
       let start = value.indexOf(result, startIndex)
@@ -105,7 +106,8 @@ const Example = ({title, text, initialValue}) => {
   const fetchHighlight = (body) => {
     axios({
       method: 'POST',
-      url: 'http://localhost:8000/api/word/highlight',
+      url: 'https://text-checker-api.herokuapp.com/api/word/highlight',
+      // url: 'http://localhost:8000/api/word/highlight',
       data: { input: body }
     })
     .then((response) => {
