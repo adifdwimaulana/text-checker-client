@@ -73,6 +73,8 @@ const Example = ({title, text, initialValue}) => {
   const [highlight, setHighlight] = useState([])
   const [order, setOrder] = useState([])
 
+  useEffect
+
   const handleChange = (e) => {
     const value = e.target.value
     setValue(value)
@@ -133,6 +135,10 @@ const Example = ({title, text, initialValue}) => {
   const fetchSuggestion = (body) => {
 
   }
+
+  useEffect(() => {
+    $('textarea').attr('spellcheck', false)
+  })
 
   return (
     <Row>
