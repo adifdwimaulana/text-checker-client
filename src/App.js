@@ -4,6 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { HighlightWithinTextarea }  from 'react-highlight-within-textarea'
 import axios from 'axios'
+import $ from 'jquery'
 
 import NavBar from './NavBar.js'
 import Tippy from '@tippyjs/react';
@@ -72,16 +73,30 @@ const crToBR = (text) => {
 const Example = ({title, text, initialValue}) => {
   const [value, setValue] = useState(initialValue)
   const [highlight, setHighlight] = useState([])
+  const [order, setOrder] = useState([])
 
   const handleChange = (e) => {
     const value = e.target.value
     setValue(value)
 
     let body = []
+    let orders = []
     let split = value.split(" ")
-    let last = split[split.length - 1]
+    
+    let startIndex = 0
+    split.forEach((result, index) => {
+      let start = value.indexOf(result, startIndex)
+      let end = result.length > 0 ? parseInt(start) + result.length : 0
+      
+      body.push(result.replace(/[!@#$%^&*.,;]$/g, ""))
+      orders.push({
+        name: result,
+        order: [start, end]
+      })
+      startIndex = end
+    })
 
-    split.forEach((result) => body.push(result.replace(/[!@#$%^&*.,;]$/g, "")))
+    setOrder(orders)
     
     // Fetch and Highlighting
     fetchHighlight(body)
@@ -96,8 +111,17 @@ const Example = ({title, text, initialValue}) => {
     .then((response) => {
       if(response.status === 200){
         if(response.data.status === 200){
-          console.log(response.data.result)
-          setHighlight(response.data.result)
+          let highlights = []
+
+          order.forEach((p, pIndex) => {
+            response.data.result.forEach((q, qIndex) => {
+              if(p.name === q){
+                highlights.push([p.order])
+              }
+            })
+          })
+
+          setHighlight(highlights)
         }
       }
     })
@@ -119,7 +143,7 @@ const Example = ({title, text, initialValue}) => {
           value={value}
           highlight={highlight}
           onChange= {handleChange}
-          onPaste={event => console.log(event.clipboardData.getData('text'))}
+          onPaste={handleChange}
           rows="4"
           containerStyle={{width: "100%"}}
           style={{width: "100%"}}
