@@ -1,9 +1,7 @@
 import React from 'react';
-import Navbar from 'react-bootstrap/NavBar';
+import { Navbar, Nav } from 'react-bootstrap';
 // eslint-disable-next-line
-import Nav from 'react-bootstrap/Nav';
 // eslint-disable-next-line
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function NavBar() {
