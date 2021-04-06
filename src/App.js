@@ -81,8 +81,10 @@ const Example = ({title, text, initialValue}) => {
 
     let body = []
     let orders = []
-    let split = value.split(/[., ]/)
+    let split = value.split(/[., \n\r]/)
     split = split.filter(e => e)
+    console.log(split)
+    console.log(highlight)
 
     let startIndex = 0
     split.forEach((result, index) => {
@@ -103,11 +105,17 @@ const Example = ({title, text, initialValue}) => {
     fetchHighlight(body)
   }
 
+  const handlePaste = (e) => {
+    const value = e.clipboardData.getData('text')
+
+    console.log(value)
+  }
+
   const fetchHighlight = (body) => {
     axios({
       method: 'POST',
-      url: 'https://text-checker-api.herokuapp.com/api/word/highlight',
-      // url: 'http://localhost:8000/api/word/highlight',
+      // url: 'https://text-checker-api.herokuapp.com/api/word/highlight',
+      url: 'http://localhost:8000/api/word/highlight',
       data: { input: body }
     })
     .then((response) => {
@@ -149,7 +157,7 @@ const Example = ({title, text, initialValue}) => {
           value={value}
           highlight={highlight}
           onChange= {handleChange}
-          onPaste={handleChange}
+          onPaste={handlePaste}
           rows="4"
           containerStyle={{width: "100%"}}
           style={{width: "100%"}}
