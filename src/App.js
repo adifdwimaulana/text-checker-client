@@ -115,7 +115,8 @@ const Example = ({title, text, initialValue}) => {
     axios({
       method: 'POST',
       // url: 'https://text-checker-api.herokuapp.com/api/word/highlight',
-      url: 'http://localhost:8000/api/word/highlight',
+      // url: 'http://localhost:8000/api/word/highlight',
+      url: 'http://149.129.249.38/api/word/highlight',
       data: { input: body }
     })
     .then((response) => {
